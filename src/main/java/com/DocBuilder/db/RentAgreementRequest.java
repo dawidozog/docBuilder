@@ -1,10 +1,5 @@
 package com.DocBuilder.db;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class RentAgreementRequest {
     private String landlordName;
     private String tenantName;
