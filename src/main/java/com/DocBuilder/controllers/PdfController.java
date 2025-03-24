@@ -9,9 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/api/pdf")
 public class PdfController {
+
+    private static final Logger log = Logger.getLogger(PdfController.class.getName());
 
     private final PdfService pdfService;
 
@@ -21,7 +26,13 @@ public class PdfController {
 
     @PostMapping("/generate/rent")
     public ResponseEntity<byte[]> generatePdfRent(@RequestBody RentAgreementRequest request) {
-        byte[] pdfBytes = pdfService.generateRentAgreement(request);
+
+        byte[] pdfBytes = null;
+        try {
+            pdfBytes = pdfService.generateRentAgreement(request);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "generatePdfRent: " + e.getMessage());
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
@@ -32,7 +43,13 @@ public class PdfController {
 
     @PostMapping("/generate/car")
     public ResponseEntity<byte[]> generatePdfCar(@RequestBody CarSaleAgreementRequest request) {
-        byte[] pdfBytes = pdfService.generateCarSaleAgreement(request);
+
+        byte[] pdfBytes = null;
+        try {
+            pdfBytes = pdfService.generateCarSaleAgreement(request);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "generatePdfCar: " + e.getMessage());
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
