@@ -2,6 +2,7 @@ package com.DocBuilder.services;
 
 import com.DocBuilder.db.RentAgreementRequest;
 import com.DocBuilder.db.CarSaleAgreementRequest;
+import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.*;
@@ -112,7 +113,8 @@ public class PdfService {
         PdfWriter writer = new PdfWriter(outputStream);
         PdfDocument pdfDocument = new PdfDocument(writer);
         Document document = new Document(pdfDocument);
-        PdfFont font = PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN);
+        PdfFont font = PdfFontFactory.createFont("src/main/resources/fonts/arial.ttf", PdfEncodings.IDENTITY_H, true);
+
 
         document.setFont(font);
         return document;
