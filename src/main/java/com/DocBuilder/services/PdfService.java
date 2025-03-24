@@ -2,21 +2,23 @@ package com.DocBuilder.services;
 
 import com.DocBuilder.db.RentAgreementRequest;
 import com.DocBuilder.db.CarSaleAgreementRequest;
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 @Service
 public class PdfService {
 
     public byte[] generateRentAgreement(RentAgreementRequest request) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            PdfWriter writer = new PdfWriter(outputStream);
-            PdfDocument pdfDocument = new PdfDocument(writer);
-            Document document = new Document(pdfDocument);
+            Document document = getDocument(outputStream);
 
             document.add(new Paragraph("UMOWA NAJMU").setBold().setFontSize(14));
             document.add(new Paragraph("Zawarta w dniu " + request.getAgreementDate() + " pomiędzy:"));
@@ -61,9 +63,7 @@ public class PdfService {
 
     public byte[] generateCarSaleAgreement(CarSaleAgreementRequest request) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            PdfWriter writer = new PdfWriter(outputStream);
-            PdfDocument pdfDocument = new PdfDocument(writer);
-            Document document = new Document(pdfDocument);
+            Document document = getDocument(outputStream);
 
             document.add(new Paragraph("UMOWA KUPNA-SPRZEDAŻY POJAZDU").setBold().setFontSize(14));
             document.add(new Paragraph("Zawarta w dniu " + request.getAgreementDate() + " w " + request.getAgreementLocation() + " pomiędzy:"));
@@ -106,6 +106,17 @@ public class PdfService {
         } catch (Exception e) {
             throw new RuntimeException("Błąd generowania PDF", e);
         }
+    }
+
+    private Document getDocument(ByteArrayOutputStream outputStream) throws IOException {
+        PdfWriter writer = new PdfWriter(outputStream);
+        PdfDocument pdfDocument = new PdfDocument(writer);
+        Document document = new Document(pdfDocument);
+        String fontPath = "fonts/arial.ttf";  // Plik czcionki w katalogu resources/fonts
+        PdfFont font = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, true);
+
+        document.setFont(font); // Ustawienie domyślnej czcionki dla dokumentu
+        return document;
     }
 
 
