@@ -25,13 +25,14 @@ public class PdfController {
     }
 
     @PostMapping("/generate/rent")
-    public ResponseEntity<byte[]> generatePdfRent(@RequestBody RentAgreementRequest request) {
+    public ResponseEntity<?> generatePdfRent(@RequestBody RentAgreementRequest request) {
 
-        byte[] pdfBytes = null;
+        byte[] pdfBytes;
         try {
             pdfBytes = pdfService.generateRentAgreement(request);
         } catch (Exception e) {
             log.log(Level.SEVERE, "generatePdfRent: " + e.getMessage());
+            return new ResponseEntity<>("Błąd generowania PDF", HttpStatus.OK);
         }
 
         HttpHeaders headers = new HttpHeaders();
@@ -42,13 +43,14 @@ public class PdfController {
     }
 
     @PostMapping("/generate/car")
-    public ResponseEntity<byte[]> generatePdfCar(@RequestBody CarSaleAgreementRequest request) {
+    public ResponseEntity<?> generatePdfCar(@RequestBody CarSaleAgreementRequest request) {
 
-        byte[] pdfBytes = null;
+        byte[] pdfBytes;
         try {
             pdfBytes = pdfService.generateCarSaleAgreement(request);
         } catch (Exception e) {
             log.log(Level.SEVERE, "generatePdfCar: " + e.getMessage());
+            return new ResponseEntity<>("Błąd generowania PDF", HttpStatus.OK);
         }
 
         HttpHeaders headers = new HttpHeaders();

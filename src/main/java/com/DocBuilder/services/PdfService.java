@@ -56,7 +56,7 @@ public class PdfService {
             document.close();
             return outputStream.toByteArray();
         } catch (Exception e) {
-            throw new RuntimeException("Błąd generowania PDF", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -104,7 +104,7 @@ public class PdfService {
             document.close();
             return outputStream.toByteArray();
         } catch (Exception e) {
-            throw new RuntimeException("Błąd generowania PDF", e);
+            throw new RuntimeException(e);
         }
     }
 
